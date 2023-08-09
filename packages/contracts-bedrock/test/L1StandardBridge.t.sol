@@ -11,7 +11,7 @@ import { Predeploys } from "../src/libraries/Predeploys.sol";
 
 // Target contract dependencies
 import { StandardBridge } from "../src/universal/StandardBridge.sol";
-import { L2StandardBridge } from "../src/L2/L2StandardBridge.sol";
+import { ETHStandardBridge, ERC20StandardBridge, StandardBridge } from "../src/universal/StandardBridge.sol";
 import { CrossDomainMessenger } from "../src/universal/CrossDomainMessenger.sol";
 import { AddressAliasHelper } from "../src/vendor/AddressAliasHelper.sol";
 
@@ -64,7 +64,7 @@ contract L1StandardBridge_Receive_Test is Bridge_Initializer {
                 CrossDomainMessenger.sendMessage.selector,
                 address(L2Bridge),
                 abi.encodeWithSelector(
-                    StandardBridge.finalizeBridgeETH.selector,
+                    ETHStandardBridge.finalizeBridgeETH.selector,
                     alice,
                     alice,
                     100,
@@ -93,7 +93,7 @@ contract PreBridgeETH is Bridge_Initializer {
         address l1MessengerAliased = AddressAliasHelper.applyL1ToL2Alias(address(L1Messenger));
 
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeETH.selector,
+            ETHStandardBridge.finalizeBridgeETH.selector,
             alice,
             alice,
             500,
@@ -110,7 +110,7 @@ contract PreBridgeETH is Bridge_Initializer {
             vm.expectCall(
                 address(L1Bridge),
                 500,
-                abi.encodeWithSelector(L1Bridge.bridgeETH.selector, 50000, hex"dead")
+                abi.encodeWithSelector(ETHStandardBridge.bridgeETH.selector, 50000, hex"dead")
             );
         }
         vm.expectCall(
@@ -233,12 +233,12 @@ contract PreBridgeETHTo is Bridge_Initializer {
             vm.expectCall(
                 address(L1Bridge),
                 600,
-                abi.encodeWithSelector(L1Bridge.bridgeETHTo.selector, bob, 60000, hex"dead")
+                abi.encodeWithSelector(ETHStandardBridge.bridgeETHTo.selector, bob, 60000, hex"dead")
             );
         }
 
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeETH.selector,
+            ETHStandardBridge.finalizeBridgeETH.selector,
             alice,
             bob,
             600,
@@ -370,7 +370,7 @@ contract L1StandardBridge_DepositERC20_Test is Bridge_Initializer {
         );
 
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeERC20.selector,
+            ERC20StandardBridge.finalizeBridgeERC20.selector,
             address(L2Token),
             address(L1Token),
             alice,
@@ -472,7 +472,7 @@ contract L1StandardBridge_DepositERC20To_Test is Bridge_Initializer {
         address l1MessengerAliased = AddressAliasHelper.applyL1ToL2Alias(address(L1Messenger));
 
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeERC20.selector,
+            ERC20StandardBridge.finalizeBridgeERC20.selector,
             address(L2Token),
             address(L1Token),
             alice,

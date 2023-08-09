@@ -15,7 +15,7 @@ import { Types } from "../src/libraries/Types.sol";
 
 // Target contract dependencies
 import { Predeploys } from "../src/libraries/Predeploys.sol";
-import { StandardBridge } from "../src/universal/StandardBridge.sol";
+import { ETHStandardBridge, ERC20StandardBridge, StandardBridge } from "../src/universal/StandardBridge.sol";
 import { OptimismMintableERC20 } from "../src/universal/OptimismMintableERC20.sol";
 
 contract L2StandardBridge_Test is Bridge_Initializer {
@@ -34,7 +34,7 @@ contract L2StandardBridge_Test is Bridge_Initializer {
         uint256 nonce = L2Messenger.messageNonce();
 
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeETH.selector,
+            ETHStandardBridge.finalizeBridgeETH.selector,
             alice,
             alice,
             100,
@@ -161,7 +161,7 @@ contract PreBridgeERC20 is Bridge_Initializer {
         assertEq(ERC20(_l2Token).balanceOf(alice), 100);
         uint256 nonce = L2Messenger.messageNonce();
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeERC20.selector,
+            ERC20StandardBridge.finalizeBridgeERC20.selector,
             address(L1Token),
             _l2Token,
             alice,
@@ -199,7 +199,7 @@ contract PreBridgeERC20 is Bridge_Initializer {
             vm.expectCall(
                 address(L2Bridge),
                 abi.encodeWithSelector(
-                    L2Bridge.bridgeERC20.selector,
+                    ERC20StandardBridge.bridgeERC20.selector,
                     _l2Token,
                     address(L1Token),
                     100,
@@ -318,7 +318,7 @@ contract PreBridgeERC20To is Bridge_Initializer {
         assertEq(ERC20(L2Token).balanceOf(alice), 100);
         uint256 nonce = L2Messenger.messageNonce();
         bytes memory message = abi.encodeWithSelector(
-            StandardBridge.finalizeBridgeERC20.selector,
+            ERC20StandardBridge.finalizeBridgeERC20.selector,
             address(L1Token),
             _l2Token,
             alice,
