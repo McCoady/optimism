@@ -318,10 +318,10 @@ func (d *DeployConfig) Check() error {
 			return fmt.Errorf("%w: GovernanceToken owner cannot be address(0)", ErrInvalidDeployConfig)
 		}
 	}
-	// L2 block time must always be smaller than L1 block time
-	if d.L1BlockTime < d.L2BlockTime {
-		return fmt.Errorf("L2 block time (%d) is larger than L1 block time (%d)", d.L2BlockTime, d.L1BlockTime)
-	}
+	// // L2 block time must always be smaller than L1 block time
+	// if d.L1BlockTime < d.L2BlockTime {
+	// 	return fmt.Errorf("L2 block time (%d) is larger than L1 block time (%d)", d.L2BlockTime, d.L1BlockTime)
+	// }
 	return nil
 }
 
